@@ -73,6 +73,7 @@
         // Render extension checkboxes
         if (extCheckboxes && Array.isArray(currentSettings.extensions)) {
             extCheckboxes.innerHTML = '';
+            const included = currentSettings.includedExtensions || [];
             currentSettings.extensions.forEach(ext => {
                 const id = `ext_${ext}`;
                 const label = document.createElement('label');
@@ -81,8 +82,12 @@
                 checkbox.type = 'checkbox';
                 checkbox.id = id;
                 checkbox.value = ext;
-                checkbox.checked = true;
+                checkbox.checked = included.length === 0 || included.includes(ext);
                 checkbox.className = 'ext-checkbox';
+                checkbox.addEventListener('change', () => {
+                    const checked = Array.from(extCheckboxes.querySelectorAll('.ext-checkbox:checked')).map(cb => cb.value);
+                    updateSetting('includedExtensions', checked);
+                });
                 label.appendChild(checkbox);
                 label.appendChild(document.createTextNode(' .' + ext));
                 extCheckboxes.appendChild(label);
@@ -119,7 +124,7 @@
             extMd.checked = true; // Always one selected
         }
     });
-    // Remove mode logic
+    // Mode logic removed
     respectGitignore.addEventListener('change', () => updateSetting('respectGitignore', respectGitignore.checked));
     includeDotfiles.addEventListener('change', () => updateSetting('includeDotfiles', includeDotfiles.checked));
     includeGitDir.addEventListener('change', () => updateSetting('includeGitDir', includeGitDir.checked));

@@ -1,4 +1,7 @@
 import * as vscode from 'vscode';
+import { EXCLUDED_EXTENSIONS_SET } from '../utils/constants';
+import { TreeBuilder } from '../utils/tree';
+import * as pathMod from 'path';
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
     private _view?: vscode.WebviewView;
@@ -58,26 +61,15 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         let extensions: string[] = [];
         if (workspaceFolder) {
             try {
-                // Use dynamic import for compatibility
                 const fg = await import('fast-glob');
-                const pathMod = await import('path');
-                const { TreeBuilder } = await import('../utils/tree');
                 const files: string[] = await fg.default(["**/*.*"], { cwd: workspaceFolder, dot: true, onlyFiles: true });
                 const fileEntries = files.map((f: string) => ({ relativePath: f, fullPath: pathMod.join(workspaceFolder, f), isSymlink: false }));
                 tree = new TreeBuilder().buildTree(fileEntries, pathMod.basename(workspaceFolder));
-                const excludedExtensions = [
-                    'png', 'jpg', 'jpeg', 'gif', 'bmp', 'ico', 'webp', 'tiff', 'svg',
-                    'mp4', 'avi', 'mov', 'wmv', 'flv', 'mkv', 'webm', 'mpg', 'mpeg', '3gp',
-                    'mp3', 'wav', 'flac', 'ogg', 'aac', 'm4a', 'wma',
-                    'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'ods', 'odp', 'rtf',
-                    'zip', 'tar', 'gz', 'bz2', '7z', 'rar', 'jar', 'war',
-                    'exe', 'dll', 'so', 'dylib', 'bin', 'obj', 'o', 'a', 'lib'
-                ];
                 extensions = Array.from(new Set(
                     files.map(f => {
-                        const ext = pathMod.extname(f);
+                        const ext = pathMod.extname(f).toLowerCase();
                         return ext.startsWith('.') ? ext.slice(1) : '';
-                    }).filter(e => e && !excludedExtensions.includes(e))
+                    }).filter(e => e && !EXCLUDED_EXTENSIONS_SET.has('.' + e))
                 ));
                 extensions = extensions.sort();
             } catch (err) {

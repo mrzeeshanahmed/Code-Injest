@@ -1,0 +1,1 @@
+{"version":3,"file":"CustomTemplateEngine.js","sourceRoot":"","sources":["../../src/templates/CustomTemplateEngine.ts"],"names":[],"mappings":";;;AAAA,qCAAqC;AACrC,MAAa,oBAAoB;IAC/B,MAAM,CAAC,MAAM,CAAC,QAAgB,EAAE,OAA4B;QAC1D,OAAO,QAAQ,CAAC,OAAO,CAAC,YAAY,EAAE,CAAC,CAAC,EAAE,GAAG,EAAE,EAAE,CAAC,OAAO,CAAC,GAAG,CAAC,IAAI,EAAE,CAAC,CAAC;IACxE,CAAC;CACF;AAJD,oDAIC"}

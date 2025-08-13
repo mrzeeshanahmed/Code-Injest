@@ -35,6 +35,9 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SidebarProvider = void 0;
 const vscode = __importStar(require("vscode"));
+const constants_1 = require("../utils/constants");
+const tree_1 = require("../utils/tree");
+const pathMod = __importStar(require("path"));
 class SidebarProvider {
     constructor(extensionUri) {
         this._onDidReceiveMessage = new vscode.EventEmitter();
@@ -74,25 +77,14 @@ class SidebarProvider {
         let extensions = [];
         if (workspaceFolder) {
             try {
-                // Use dynamic import for compatibility
                 const fg = await Promise.resolve().then(() => __importStar(require('fast-glob')));
-                const pathMod = await Promise.resolve().then(() => __importStar(require('path')));
-                const { TreeBuilder } = await Promise.resolve().then(() => __importStar(require('../utils/tree')));
                 const files = await fg.default(["**/*.*"], { cwd: workspaceFolder, dot: true, onlyFiles: true });
                 const fileEntries = files.map((f) => ({ relativePath: f, fullPath: pathMod.join(workspaceFolder, f), isSymlink: false }));
-                tree = new TreeBuilder().buildTree(fileEntries, pathMod.basename(workspaceFolder));
-                const excludedExtensions = [
-                    'png', 'jpg', 'jpeg', 'gif', 'bmp', 'ico', 'webp', 'tiff', 'svg',
-                    'mp4', 'avi', 'mov', 'wmv', 'flv', 'mkv', 'webm', 'mpg', 'mpeg', '3gp',
-                    'mp3', 'wav', 'flac', 'ogg', 'aac', 'm4a', 'wma',
-                    'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'ods', 'odp', 'rtf',
-                    'zip', 'tar', 'gz', 'bz2', '7z', 'rar', 'jar', 'war',
-                    'exe', 'dll', 'so', 'dylib', 'bin', 'obj', 'o', 'a', 'lib'
-                ];
+                tree = new tree_1.TreeBuilder().buildTree(fileEntries, pathMod.basename(workspaceFolder));
                 extensions = Array.from(new Set(files.map(f => {
-                    const ext = pathMod.extname(f);
+                    const ext = pathMod.extname(f).toLowerCase();
                     return ext.startsWith('.') ? ext.slice(1) : '';
-                }).filter(e => e && !excludedExtensions.includes(e))));
+                }).filter(e => e && !constants_1.EXCLUDED_EXTENSIONS_SET.has('.' + e))));
                 extensions = extensions.sort();
             }
             catch (err) {

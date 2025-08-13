@@ -51,14 +51,10 @@
           "default": "digest.txt",
           "description": "Name of the output file (supports .txt or .md)"
         },
-        "codeDigest.mode": {
-          "type": "string",
-          "enum": [
-            "curated",
-            "allText"
-          ],
-          "default": "curated",
-          "description": "File inclusion mode"
+        "codeDigest.includedExtensions": {
+          "type": "array",
+          "default": [],
+          "description": "List of file extensions to include in digest (empty = auto)"
         },
         "codeDigest.respectGitignore": {
           "type": "boolean",

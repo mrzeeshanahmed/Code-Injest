@@ -39,65 +39,44 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.IgnoreFilter = void 0;
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
+const constants_1 = require("./constants");
 const ignore_1 = __importDefault(require("ignore"));
 class IgnoreFilter {
     constructor() {
-        this.defaultIgnores = [
-            'node_modules/**',
-            'dist/**',
-            'build/**',
-            'target/**',
-            'out/**',
-            '.next/**',
-            '.nuxt/**',
-            '.venv/**',
-            'venv/**',
-            '.idea/**',
-            '.vscode/**',
-            '__pycache__/**',
-            '.pytest_cache/**',
-            'coverage/**',
-            'logs/**',
-            '*.log',
-            'site-packages/**',
-            '.DS_Store',
-            'Thumbs.db'
-        ];
+        this.defaultIgnores = constants_1.DEFAULT_IGNORE_PATTERNS;
+        // Store ignore patterns per directory for correct scoping
+        this.dirIgnores = {};
+        this.allPatterns = [];
         this.ignoreInstance = (0, ignore_1.default)();
     }
     async initialize(rootPath) {
-        // Add default ignores
         this.ignoreInstance.add(this.defaultIgnores);
-        // Load .gitignore files
-        await this.loadIgnoreFiles(rootPath, '.gitignore');
-        await this.loadIgnoreFiles(rootPath, '.gitingestignore');
+        await this.loadIgnoreFiles(rootPath, ['.gitignore', '.gitingestignore']);
     }
-    async loadIgnoreFiles(rootPath, filename) {
-        try {
-            await this.walkDirectory(rootPath, async (dirPath) => {
+    async loadIgnoreFiles(rootPath, filenames) {
+        // Walk the directory tree and collect ignore patterns per directory
+        await this.walkDirectory(rootPath, async (dirPath) => {
+            for (const filename of filenames) {
                 const ignoreFilePath = path.join(dirPath, filename);
                 try {
                     const content = await fs.promises.readFile(ignoreFilePath, 'utf8');
-                    const relativeDirPath = path.relative(rootPath, dirPath);
                     const patterns = content
                         .split('\n')
                         .map((line) => line.trim())
-                        .filter((line) => line && !line.startsWith('#'))
-                        .map((pattern) => {
-                        if (relativeDirPath && !pattern.startsWith('/')) {
-                            return path.join(relativeDirPath, pattern).replace(/\\/g, '/');
-                        }
-                        return pattern.startsWith('/') ? pattern.slice(1) : pattern;
-                    });
-                    this.ignoreInstance.add(patterns);
+                        .filter((line) => line && !line.startsWith('#'));
+                    if (patterns.length) {
+                        this.dirIgnores[dirPath] = (this.dirIgnores[dirPath] || (0, ignore_1.default)()).add(patterns);
+                        this.allPatterns.push(...patterns);
+                    }
                 }
                 catch {
                     // Ignore files that can't be read
                 }
-            });
-        }
-        catch {
-            // Ignore directory traversal errors
+            }
+        });
+        // Add all patterns to the global instance for legacy support
+        if (this.allPatterns.length) {
+            this.ignoreInstance.add(this.allPatterns);
         }
     }
     async walkDirectory(dirPath, callback) {
@@ -116,6 +95,15 @@ class IgnoreFilter {
         }
     }
     shouldIgnore(relativePath) {
+        // Find the deepest directory ignore instance that applies
+        const parts = relativePath.split(/[\\\/]/);
+        for (let i = parts.length; i >= 0; i--) {
+            const dir = parts.slice(0, i).join(path.sep);
+            if (this.dirIgnores[dir] && this.dirIgnores[dir].ignores(relativePath)) {
+                return true;
+            }
+        }
+        // Fallback to global instance
         return this.ignoreInstance.ignores(relativePath);
     }
 }
