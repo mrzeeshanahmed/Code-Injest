@@ -1,19 +1,19 @@
 import * as vscode from 'vscode';
 import { SidebarProvider } from './panels/SidebarProvider';
-import { DigestGenerator } from './utils/DigestGenerator';
+import { IngestGenerator } from './utils/DigestGenerator';
 
 export function activate(context: vscode.ExtensionContext) {
     const sidebarProvider = new SidebarProvider(context.extensionUri);
-    const digestGenerator = new DigestGenerator();
+    const ingestGenerator = new IngestGenerator();
 
     // Register sidebar view
     context.subscriptions.push(
-        vscode.window.registerWebviewViewProvider('codeDigest.view', sidebarProvider)
+    vscode.window.registerWebviewViewProvider('codeIngest.view', sidebarProvider)
     );
 
     // Register command
-    const generateCommand = vscode.commands.registerCommand('codeDigest.create', async () => {
-        await digestGenerator.generateDigest();
+    const generateCommand = vscode.commands.registerCommand('codeIngest.create', async () => {
+        await ingestGenerator.generateIngest();
     });
 
     context.subscriptions.push(generateCommand);
@@ -22,7 +22,7 @@ export function activate(context: vscode.ExtensionContext) {
     sidebarProvider.onDidReceiveMessage(async (message: any) => {
         switch (message.command) {
             case 'generate':
-                await digestGenerator.generateDigest();
+                await ingestGenerator.generateIngest();
                 // Notify webview to reset UI after digest generation
                 sidebarProvider.postMessage({
                     command: 'complete',
@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
                 });
                 break;
             case 'updateSetting':
-                await vscode.workspace.getConfiguration('codeDigest').update(
+                await vscode.workspace.getConfiguration('codeIngest').update(
                     message.key,
                     message.value,
                     vscode.ConfigurationTarget.Workspace

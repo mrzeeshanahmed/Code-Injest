@@ -34,7 +34,7 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LanguageDetector = void 0;
-// File type detection for Code Digest
+// File type detection for Code Ingest
 const path = __importStar(require("path"));
 class LanguageDetector {
     static detect(filePath) {

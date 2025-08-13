@@ -1,4 +1,4 @@
-// Advanced filtering UI for Code Digest
+// Advanced filtering UI for Code Ingest
 import * as vscode from 'vscode';
 
 export class FilterPanel {

@@ -3,7 +3,7 @@
     let currentSettings = {};
 
     // Get DOM elements
-    const form = document.getElementById('digestForm');
+    const form = document.getElementById('ingestForm');
     const generateBtn = document.getElementById('generateBtn');
     const progress = document.getElementById('progress');
     const results = document.getElementById('results');
@@ -46,7 +46,7 @@
 
     function updateFormFromSettings() {
         // Only set filename (no extension)
-        let fname = currentSettings.outputFileName || 'digest.txt';
+    let fname = currentSettings.outputFileName || 'ingest.txt';
         if (fname.endsWith('.txt')) fname = fname.slice(0, -4);
         if (fname.endsWith('.md')) fname = fname.slice(0, -3);
         outputFileName.value = fname;

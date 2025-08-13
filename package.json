@@ -1,7 +1,7 @@
 {
-  "name": "code-digest",
-  "displayName": "Code Digest",
-  "description": "Generate Gitingest-style prompt-friendly code digests",
+  "name": "code-ingest",
+  "displayName": "Code Ingest",
+  "description": "Generate Gitingest-style prompt-friendly code ingests",
   "version": "1.0.0",
   "publisher": "your-publisher",
   "engines": {
@@ -13,30 +13,30 @@
   ],
   "main": "./out/extension.js",
   "activationEvents": [
-    "onView:codeDigest.view",
-    "onCommand:codeDigest.create"
+  "onView:codeIngest.view",
+  "onCommand:codeIngest.create"
   ],
   "contributes": {
     "commands": [
       {
-        "command": "codeDigest.create",
-        "title": "Code Digest: Create Digest"
+  "command": "codeIngest.create",
+  "title": "Code Ingest: Create Ingest"
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "codeDigest",
-          "title": "Code Digest",
+          "id": "codeIngest",
+          "title": "Code Ingest",
           "icon": "resources/icon.png"
         }
       ]
     },
     "views": {
-      "codeDigest": [
+  "codeIngest": [
         {
-          "id": "codeDigest.view",
-          "name": "Code Digest",
+          "id": "codeIngest.view",
+          "name": "Code Ingest",
           "type": "webview",
           "icon": "resources/icon.png",
           "when": "workbenchState != empty"
@@ -44,54 +44,54 @@
       ]
     },
     "configuration": {
-      "title": "Code Digest",
+  "title": "Code Ingest",
       "properties": {
-        "codeDigest.outputFileName": {
+  "codeIngest.outputFileName": {
           "type": "string",
           "default": "digest.txt",
           "description": "Name of the output file (supports .txt or .md)"
         },
-        "codeDigest.includedExtensions": {
+  "codeIngest.includedExtensions": {
           "type": "array",
           "default": [],
           "description": "List of file extensions to include in digest (empty = auto)"
         },
-        "codeDigest.respectGitignore": {
+  "codeIngest.respectGitignore": {
           "type": "boolean",
           "default": true,
           "description": "Respect .gitignore and apply default excludes"
         },
-        "codeDigest.includeDotfiles": {
+  "codeIngest.includeDotfiles": {
           "type": "boolean",
           "default": true,
           "description": "Include dotfiles and config files"
         },
-        "codeDigest.includeGitDir": {
+  "codeIngest.includeGitDir": {
           "type": "boolean",
           "default": false,
           "description": "Include .git directory"
         },
-        "codeDigest.maxFileSizeKB": {
+  "codeIngest.maxFileSizeKB": {
           "type": "number",
           "default": 10240,
           "description": "Maximum file size in KB"
         },
-        "codeDigest.includeBinary": {
+  "codeIngest.includeBinary": {
           "type": "boolean",
           "default": false,
           "description": "Include binary files (as base64 if needed)"
         },
-        "codeDigest.additionalIncludeGlobs": {
+  "codeIngest.additionalIncludeGlobs": {
           "type": "array",
           "default": [],
           "description": "Additional glob patterns to include"
         },
-        "codeDigest.additionalExcludeGlobs": {
+  "codeIngest.additionalExcludeGlobs": {
           "type": "array",
           "default": [],
           "description": "Additional glob patterns to exclude"
         },
-        "codeDigest.markdownCodeFences": {
+  "codeIngest.markdownCodeFences": {
           "type": "boolean",
           "default": false,
           "description": "Use markdown code fences for content blocks"

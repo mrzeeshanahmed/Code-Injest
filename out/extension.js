@@ -40,19 +40,19 @@ const SidebarProvider_1 = require("./panels/SidebarProvider");
 const DigestGenerator_1 = require("./utils/DigestGenerator");
 function activate(context) {
     const sidebarProvider = new SidebarProvider_1.SidebarProvider(context.extensionUri);
-    const digestGenerator = new DigestGenerator_1.DigestGenerator();
+    const ingestGenerator = new DigestGenerator_1.IngestGenerator();
     // Register sidebar view
-    context.subscriptions.push(vscode.window.registerWebviewViewProvider('codeDigest.view', sidebarProvider));
+    context.subscriptions.push(vscode.window.registerWebviewViewProvider('codeIngest.view', sidebarProvider));
     // Register command
-    const generateCommand = vscode.commands.registerCommand('codeDigest.create', async () => {
-        await digestGenerator.generateDigest();
+    const generateCommand = vscode.commands.registerCommand('codeIngest.create', async () => {
+        await ingestGenerator.generateIngest();
     });
     context.subscriptions.push(generateCommand);
     // Listen for messages from sidebar
     sidebarProvider.onDidReceiveMessage(async (message) => {
         switch (message.command) {
             case 'generate':
-                await digestGenerator.generateDigest();
+                await ingestGenerator.generateIngest();
                 // Notify webview to reset UI after digest generation
                 sidebarProvider.postMessage({
                     command: 'complete',
@@ -62,7 +62,7 @@ function activate(context) {
                 });
                 break;
             case 'updateSetting':
-                await vscode.workspace.getConfiguration('codeDigest').update(message.key, message.value, vscode.ConfigurationTarget.Workspace);
+                await vscode.workspace.getConfiguration('codeIngest').update(message.key, message.value, vscode.ConfigurationTarget.Workspace);
                 break;
             case 'refreshExtension':
                 // Re-send settings and refresh sidebar only if _view is defined

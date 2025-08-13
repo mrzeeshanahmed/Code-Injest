@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FilterEngine = void 0;
-// Advanced pattern matching & filtering for Code Digest (Gitingest-level)
+// Advanced pattern matching & filtering for Code Ingest (Gitingest-level)
 const minimatch_1 = require("minimatch");
 class FilterEngine {
     constructor(options) {

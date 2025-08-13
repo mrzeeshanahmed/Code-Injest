@@ -1,4 +1,4 @@
-// Advanced file discovery for Code Digest (Gitingest-level)
+// Advanced file discovery for Code Ingest (Gitingest-level)
 import * as fs from 'fs';
 import * as path from 'path';
 

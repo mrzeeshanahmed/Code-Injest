@@ -1,4 +1,4 @@
-// Built-in templates for Code Digest
+// Built-in templates for Code Ingest
 export const DefaultTemplates = {
   summary: `Directory: {{directory}}
 Files analyzed: {{fileCount}}
@@ -8,6 +8,6 @@ Estimated tokens: {{tokenEstimate}}`,
 {{content}}`,
   directory: `Directory: {{directory}}
 {{tree}}`,
-  header: `# Code Digest Report\n`,
-  footer: `\n--- End of Digest ---`
+  header: `# Code Ingest Report\n`,
+  footer: `\n--- End of Ingest ---`
 };

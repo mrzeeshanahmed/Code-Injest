@@ -1,4 +1,4 @@
-// File type detection for Code Digest
+// File type detection for Code Ingest
 import * as path from 'path';
 
 export class LanguageDetector {

@@ -1,4 +1,4 @@
-// Content optimization for Code Digest (Gitingest-level)
+// Content optimization for Code Ingest (Gitingest-level)
 import { FileMetadata } from './RepositoryScanner';
 
 export interface ContentProcessorOptions {

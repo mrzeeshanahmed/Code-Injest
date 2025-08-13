@@ -60,7 +60,7 @@ class SidebarProvider {
         this._updateWebviewSettings();
         // Listen for configuration changes
         vscode.workspace.onDidChangeConfiguration((e) => {
-            if (e.affectsConfiguration('codeDigest')) {
+            if (e.affectsConfiguration('codeIngest')) {
                 this._updateWebviewSettings();
             }
         });
@@ -71,7 +71,7 @@ class SidebarProvider {
         }
     }
     async _updateWebviewSettings() {
-        const config = vscode.workspace.getConfiguration('codeDigest');
+        const config = vscode.workspace.getConfiguration('codeIngest');
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
         let tree = '';
         let extensions = [];
@@ -118,17 +118,17 @@ class SidebarProvider {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${styleUri}" rel="stylesheet">
-<title>Code Digest</title>
+<title>Code Ingest</title>
 </head>
 <body>
 <div class="container">
-<h2>Create Code Digest</h2>
-<p class="subtitle">Gitingest-style local digest</p>
-<form id="digestForm">
+<h2>Create Code Ingest</h2>
+<p class="subtitle">Gitingest-style local ingest</p>
+<form id="ingestForm">
 <button type="button" id="refreshBtn" class="refresh-btn">🔄 Refresh Extension</button>
 <div class="form-group">
 <label for="outputFileName">Output File:</label>
-<input type="text" id="outputFileName" placeholder="digest">
+<input type="text" id="outputFileName" placeholder="ingest">
 <div class="ext-choice">
     <label><input type="checkbox" id="extTxt" checked> .txt</label>
     <label><input type="checkbox" id="extMd"> .md</label>
@@ -174,11 +174,11 @@ class SidebarProvider {
 <label><input type="checkbox" id="markdownCodeFences"> Use markdown code fences</label>
 <small>Only applies to .md output files</small>
 </div>
-<button type="button" id="generateBtn" class="generate-btn">Generate Digest</button>
+<button type="button" id="generateBtn" class="generate-btn">Generate Ingest</button>
 </form>
 <div id="progress" class="progress hidden">
 <div class="spinner"></div>
-<span id="progressText">Generating digest...</span>
+<span id="progressText">Generating ingest...</span>
 </div>
 <div id="results" class="results hidden">
 <h3>Results</h3>

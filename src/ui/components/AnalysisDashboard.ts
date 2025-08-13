@@ -1,4 +1,4 @@
-// Statistics & insights dashboard for Code Digest
+// Statistics & insights dashboard for Code Ingest
 import * as vscode from 'vscode';
 
 export class AnalysisDashboard {

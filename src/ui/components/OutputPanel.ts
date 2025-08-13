@@ -1,4 +1,4 @@
-// Output configuration panel for Code Digest
+// Output configuration panel for Code Ingest
 import * as vscode from 'vscode';
 
 export class OutputPanel {

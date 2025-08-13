@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DefaultTemplates = void 0;
-// Built-in templates for Code Digest
+// Built-in templates for Code Ingest
 exports.DefaultTemplates = {
     summary: `Directory: {{directory}}
 Files analyzed: {{fileCount}}
@@ -11,7 +11,7 @@ Estimated tokens: {{tokenEstimate}}`,
 {{content}}`,
     directory: `Directory: {{directory}}
 {{tree}}`,
-    header: `# Code Digest Report\n`,
-    footer: `\n--- End of Digest ---`
+    header: `# Code Ingest Report\n`,
+    footer: `\n--- End of Ingest ---`
 };
 //# sourceMappingURL=DefaultTemplates.js.map

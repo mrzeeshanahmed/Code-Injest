@@ -34,7 +34,7 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FilterPanel = void 0;
-// Advanced filtering UI for Code Digest
+// Advanced filtering UI for Code Ingest
 const vscode = __importStar(require("vscode"));
 class FilterPanel {
     constructor() {

@@ -34,7 +34,7 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RepositoryScanner = void 0;
-// Advanced file discovery for Code Digest (Gitingest-level)
+// Advanced file discovery for Code Ingest (Gitingest-level)
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 class RepositoryScanner {

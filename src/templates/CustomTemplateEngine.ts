@@ -1,4 +1,4 @@
-// Template processor for Code Digest
+// Template processor for Code Ingest
 export class CustomTemplateEngine {
   static render(template: string, context: Record<string, any>): string {
     return template.replace(/{{(\w+)}}/g, (_, key) => context[key] ?? '');

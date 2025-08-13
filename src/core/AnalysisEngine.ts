@@ -1,4 +1,4 @@
-// Repository analysis for Code Digest (Gitingest-level)
+// Repository analysis for Code Ingest (Gitingest-level)
 import { FileMetadata } from './RepositoryScanner';
 
 export interface RepositoryAnalysis {

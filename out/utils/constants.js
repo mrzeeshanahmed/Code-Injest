@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DEFAULT_IGNORE_PATTERNS = exports.LANGUAGE_MAP = exports.CONFIG_FILE_NAMES = exports.CODE_EXTENSIONS_SET = exports.TEXT_EXTENSIONS_SET = exports.BINARY_EXTENSIONS_SET = exports.EXCLUDED_EXTENSIONS_SET = void 0;
-// Centralized constants for Code Injest
+// Centralized constants for Code Ingest
 exports.EXCLUDED_EXTENSIONS_SET = new Set([
     '.png', '.jpg', '.jpeg', '.gif', '.bmp', '.ico', '.webp', '.tiff', '.svg',
     '.mp4', '.avi', '.mov', '.wmv', '.flv', '.mkv', '.webm', '.mpg', '.mpeg', '.3gp',

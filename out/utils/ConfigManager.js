@@ -34,14 +34,14 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConfigManager = void 0;
-// Settings management for Code Digest
+// Settings management for Code Ingest
 const vscode = __importStar(require("vscode"));
 class ConfigManager {
     static get(key, defaultValue) {
-        return vscode.workspace.getConfiguration('codeDigest').get(key, defaultValue);
+        return vscode.workspace.getConfiguration('codeIngest').get(key, defaultValue);
     }
     static set(key, value) {
-        return vscode.workspace.getConfiguration('codeDigest').update(key, value, vscode.ConfigurationTarget.Workspace);
+        return vscode.workspace.getConfiguration('codeIngest').update(key, value, vscode.ConfigurationTarget.Workspace);
     }
 }
 exports.ConfigManager = ConfigManager;

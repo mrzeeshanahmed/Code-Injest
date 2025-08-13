@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DigestGenerator = void 0;
+exports.IngestGenerator = void 0;
 const vscode = __importStar(require("vscode"));
 const path = __importStar(require("path"));
 const RepositoryScanner_1 = require("../core/RepositoryScanner");
@@ -46,9 +46,9 @@ const constants_1 = require("./constants");
 const util_1 = require("util");
 const readFile = (0, util_1.promisify)(fs.readFile);
 const writeFile = (0, util_1.promisify)(fs.writeFile);
-class DigestGenerator {
+class IngestGenerator {
     constructor() {
-        this.config = vscode.workspace.getConfiguration('codeDigest');
+        this.config = vscode.workspace.getConfiguration('codeIngest');
         this.workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '';
         this.treeBuilder = new tree_1.TreeBuilder();
         this.binaryDetector = new binary_1.BinaryDetector();
@@ -56,7 +56,7 @@ class DigestGenerator {
         this.scanner = new RepositoryScanner_1.RepositoryScanner(this.workspaceRoot);
         this.filterEngine = new FilterEngine_1.FilterEngine(this.getFilteringOptions());
     }
-    async generateDigest() {
+    async generateIngest() {
         if (!this.workspaceRoot) {
             vscode.window.showErrorMessage('Please open a workspace folder first.');
             return;
@@ -65,11 +65,11 @@ class DigestGenerator {
         try {
             await vscode.window.withProgress({
                 location: vscode.ProgressLocation.Notification,
-                title: "Generating Code Digest",
+                title: "Generating Code Ingest",
                 cancellable: false
             }, async (progress) => {
                 progress.report({ increment: 0, message: "Scanning files..." });
-                this.config = vscode.workspace.getConfiguration('codeDigest');
+                this.config = vscode.workspace.getConfiguration('codeIngest');
                 this.filterEngine = new FilterEngine_1.FilterEngine(this.getFilteringOptions());
                 const allFiles = await this.scanner.scan({
                     maxDepth: this.config.get('maxDepth', 20),
@@ -85,12 +85,12 @@ class DigestGenerator {
                 }
                 progress.report({ increment: 40, message: "Processing content..." });
                 const { summary, tree, content, warnings } = await this.processFiles(filteredFiles, nonFatalErrors);
-                progress.report({ increment: 80, message: "Writing digest file..." });
-                const outputPath = await this.writeDigest(summary, tree, content, warnings);
+                progress.report({ increment: 80, message: "Writing ingest file..." });
+                const outputPath = await this.writeIngest(summary, tree, content, warnings);
                 progress.report({ increment: 100, message: "Complete!" });
                 const doc = await vscode.workspace.openTextDocument(outputPath);
                 await vscode.window.showTextDocument(doc);
-                let infoMsg = `Code digest generated: ${path.basename(outputPath)}`;
+                let infoMsg = `Code ingest generated: ${path.basename(outputPath)}`;
                 if (warnings && warnings.length > 0) {
                     infoMsg += ` (Completed with warnings: ${warnings.length})`;
                 }
@@ -99,7 +99,7 @@ class DigestGenerator {
         }
         catch (error) {
             const message = error instanceof Error ? error.message : 'Unknown error occurred';
-            vscode.window.showErrorMessage(`Failed to generate digest: ${message}`);
+            vscode.window.showErrorMessage(`Failed to generate ingest: ${message}`);
         }
     }
     getFilteringOptions() {
@@ -185,7 +185,7 @@ class DigestGenerator {
                 contentText = buffer.toString('utf8');
             }
             // Apply markdown code fences if enabled and output is .md
-            const outputFileName = this.config.get('outputFileName', 'digest.txt');
+            const outputFileName = this.config.get('outputFileName', 'ingest.txt');
             const useCodeFences = this.config.get('markdownCodeFences', false) &&
                 outputFileName.toLowerCase().endsWith('.md');
             if (useCodeFences && !isBinary) {
@@ -215,8 +215,8 @@ class DigestGenerator {
     getLanguageForExtension(ext) {
         return constants_1.LANGUAGE_MAP[ext.toLowerCase()] || '';
     }
-    async writeDigest(summary, tree, content, warnings) {
-        const outputFileName = this.config.get('outputFileName', 'digest.txt');
+    async writeIngest(summary, tree, content, warnings) {
+        const outputFileName = this.config.get('outputFileName', 'ingest.txt');
         const outputPath = path.join(this.workspaceRoot, outputFileName);
         let fullContent = [
             summary,
@@ -233,5 +233,5 @@ class DigestGenerator {
         return outputPath;
     }
 }
-exports.DigestGenerator = DigestGenerator;
+exports.IngestGenerator = IngestGenerator;
 //# sourceMappingURL=DigestGenerator.js.map

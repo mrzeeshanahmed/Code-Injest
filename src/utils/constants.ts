@@ -1,4 +1,4 @@
-// Centralized constants for Code Injest
+// Centralized constants for Code Ingest
 export const EXCLUDED_EXTENSIONS_SET = new Set([
 '.png','.jpg','.jpeg','.gif','.bmp','.ico','.webp','.tiff','.svg',
 '.mp4','.avi','.mov','.wmv','.flv','.mkv','.webm','.mpg','.mpeg','.3gp',

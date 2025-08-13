@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PatternMatcher = void 0;
-// Advanced glob pattern matcher for Code Digest
+// Advanced glob pattern matcher for Code Ingest
 const minimatch_1 = require("minimatch");
 class PatternMatcher {
     static match(path, patterns) {

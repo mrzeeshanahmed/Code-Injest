@@ -1,4 +1,4 @@
-// Advanced glob pattern matcher for Code Digest
+// Advanced glob pattern matcher for Code Ingest
 import { minimatch } from 'minimatch';
 
 export class PatternMatcher {

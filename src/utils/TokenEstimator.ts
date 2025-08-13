@@ -1,4 +1,4 @@
-// Enhanced token counting for Code Digest
+// Enhanced token counting for Code Ingest
 export class TokenEstimator {
   estimate(text: string): number {
     // Simple heuristic: tokens ≈ words * 1.3

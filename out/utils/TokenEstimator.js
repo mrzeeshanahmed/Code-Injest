@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TokenEstimator = void 0;
-// Enhanced token counting for Code Digest
+// Enhanced token counting for Code Ingest
 class TokenEstimator {
     estimate(text) {
         // Simple heuristic: tokens ≈ words * 1.3

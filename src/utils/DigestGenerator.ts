@@ -19,7 +19,7 @@ import { promisify } from 'util';
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
-export class DigestGenerator {
+export class IngestGenerator {
 	private config: vscode.WorkspaceConfiguration;
 	private workspaceRoot: string;
 	private treeBuilder: TreeBuilder;
@@ -29,7 +29,7 @@ export class DigestGenerator {
 	private filterEngine: FilterEngine;
 
 	constructor() {
-		this.config = vscode.workspace.getConfiguration('codeDigest');
+	this.config = vscode.workspace.getConfiguration('codeIngest');
 		this.workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '';
 		this.treeBuilder = new TreeBuilder();
 		this.binaryDetector = new BinaryDetector();
@@ -38,7 +38,7 @@ export class DigestGenerator {
 		this.filterEngine = new FilterEngine(this.getFilteringOptions());
 	}
 
-	async generateDigest(): Promise<void> {
+	async generateIngest(): Promise<void> {
 		if (!this.workspaceRoot) {
 			vscode.window.showErrorMessage('Please open a workspace folder first.');
 			return;
@@ -47,11 +47,11 @@ export class DigestGenerator {
 		try {
 			await vscode.window.withProgress({
 				location: vscode.ProgressLocation.Notification,
-				title: "Generating Code Digest",
+				title: "Generating Code Ingest",
 				cancellable: false
 			}, async (progress) => {
 				progress.report({ increment: 0, message: "Scanning files..." });
-				this.config = vscode.workspace.getConfiguration('codeDigest');
+				this.config = vscode.workspace.getConfiguration('codeIngest');
 				this.filterEngine = new FilterEngine(this.getFilteringOptions());
 				const allFiles: FileMetadata[] = await this.scanner.scan({
 					maxDepth: this.config.get<number>('maxDepth', 20),
@@ -67,12 +67,12 @@ export class DigestGenerator {
 				}
 				progress.report({ increment: 40, message: "Processing content..." });
 				const { summary, tree, content, warnings } = await this.processFiles(filteredFiles, nonFatalErrors);
-				progress.report({ increment: 80, message: "Writing digest file..." });
-				const outputPath = await this.writeDigest(summary, tree, content, warnings);
+				progress.report({ increment: 80, message: "Writing ingest file..." });
+				const outputPath = await this.writeIngest(summary, tree, content, warnings);
 				progress.report({ increment: 100, message: "Complete!" });
 				const doc = await vscode.workspace.openTextDocument(outputPath);
 				await vscode.window.showTextDocument(doc);
-				let infoMsg = `Code digest generated: ${path.basename(outputPath)}`;
+				let infoMsg = `Code ingest generated: ${path.basename(outputPath)}`;
 				if (warnings && warnings.length > 0) {
 					infoMsg += ` (Completed with warnings: ${warnings.length})`;
 				}
@@ -80,7 +80,7 @@ export class DigestGenerator {
 			});
 		} catch (error) {
 			const message = error instanceof Error ? error.message : 'Unknown error occurred';
-			vscode.window.showErrorMessage(`Failed to generate digest: ${message}`);
+			vscode.window.showErrorMessage(`Failed to generate ingest: ${message}`);
 		}
 	}
 
@@ -165,7 +165,7 @@ export class DigestGenerator {
 				contentText = buffer.toString('utf8');
 			}
 			// Apply markdown code fences if enabled and output is .md
-			const outputFileName = this.config.get<string>('outputFileName', 'digest.txt');
+		const outputFileName = this.config.get<string>('outputFileName', 'ingest.txt');
 			const useCodeFences = this.config.get<boolean>('markdownCodeFences', false) && 
 								 outputFileName.toLowerCase().endsWith('.md');
 			if (useCodeFences && !isBinary) {
@@ -196,8 +196,8 @@ export class DigestGenerator {
 	return LANGUAGE_MAP[ext.toLowerCase()] || '';
 	}
 
-	private async writeDigest(summary: string, tree: string, content: string, warnings?: string[]): Promise<string> {
-		const outputFileName = this.config.get<string>('outputFileName', 'digest.txt');
+	private async writeIngest(summary: string, tree: string, content: string, warnings?: string[]): Promise<string> {
+	const outputFileName = this.config.get<string>('outputFileName', 'ingest.txt');
 		const outputPath = path.join(this.workspaceRoot, outputFileName);
 		let fullContent = [
 			summary,

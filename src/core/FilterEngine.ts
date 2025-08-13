@@ -1,4 +1,4 @@
-// Advanced pattern matching & filtering for Code Digest (Gitingest-level)
+// Advanced pattern matching & filtering for Code Ingest (Gitingest-level)
 import { minimatch } from 'minimatch';
 
 export interface FilteringOptions {
